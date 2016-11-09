@@ -1,4 +1,4 @@
-# 2016wdc
+# 2016 Watson Developer Conference 
 If you like this lab please give me a star!
 
 - [Please follow this instructions to create a simple Android app with Watson Sentiment Anlysis/AlchemyAPI](https://github.com/blumareks/2016wdc/tree/master/SentimentSensitiveApp)
