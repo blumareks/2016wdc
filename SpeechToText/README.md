@@ -20,43 +20,53 @@ I explain at the end of this blogpost on how to get straight with prereqs.
 <b>Extend it with one additional button - voice!</b>
 You’ll add a new button (button2) to the existing design.
 
-<pre>public class MainActivity extends AppCompatActivity {
+```java
+public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     EditText editText;
     Button button;
     Button button2; //new button for voice
-</pre>
+```
+
 
 Add the async task for launching the operations when a button2 is pressed (alike previously):
-<pre>    private class SpeakToWatson extends AsyncTask&lt;String, Void, String&gt; {
+```java
+    private class SpeakToWatson extends AsyncTask&lt;String, Void, String&gt; {
 
         @Override
         protected String doInBackground(String... voicesToTranscribe) {
-</pre>
+```
+
 this insert is good to pass the parameters to UI from inside of the async thread:
-<pre>            runOnUiThread(new Runnable() {
+```java
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     textView.setText("we are listening to the Speech");
                 }
             });
-</pre>
+```
+
 this is just a simple return (we will add the IBM Watson call later):
-<pre>            return "speech to text done";
+```java
+            return "speech to text done";
         }
 
-</pre>
+```
 When done we will set the Text View with the status:
-<pre>        @Override
+```java
+        @Override
         protected void onPostExecute(String result) {
             textView.setText("STT status: " + result);
         }
 
     }
-</pre>
+```
+
 Setting up the UI parameters:
-<pre>    @Override
+```java
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -66,9 +76,12 @@ Setting up the UI parameters:
         textView = (TextView) findViewById(R.id.textView);
         //STT init
         button2 = (Button) findViewById(R.id.button2);
-</pre>
+```
+
 Add the on click listener for button2:
-<pre>        button2.setOnClickListener(new View.OnClickListener() {
+```java
+
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.out.println("the STT ");
@@ -80,7 +93,8 @@ Add the on click listener for button2:
         });
     }
 }
-</pre>
+```
+
 
 Run the test to see if the button works as planned.
 
@@ -104,16 +118,20 @@ Now we need to allow to call Watson service from our app. Double click <code>/ap
 <b>Final steps</b>
 
 The final steps - first add the imports (they might be added by Android Studio for you when typing the code):
-<pre>//0. adding WDC SDK for Java/Android
+
+```java
      import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
      import com.ibm.watson.developer_cloud.speech_to_text.v1.SpeechToText;
      import com.ibm.watson.developer_cloud.speech_to_text.v1.model.RecognizeOptions;
      import com.ibm.watson.developer_cloud.speech_to_text.v1.model.SpeechResults;
      import com.ibm.watson.developer_cloud.speech_to_text.v1.websocket.RecognizeCallback;
-</pre>
+```
+
 Then instantiate the code by adding the username and the password to access Watson services from the app.
 And finally add the call to the Watson STT service before the return clause:
-<pre>            SpeechToText service = new SpeechToText();
+```java
+
+            SpeechToText service = new SpeechToText();
                              String username = "your STT user";
                              String password = "your STT pwd";
                              service.setUsernameAndPassword(username, password);
@@ -125,10 +143,10 @@ RecognizeOptions recOptions = new RecognizeOptions.Builder().continuous(true)
                     .interimResults(true).inactivityTimeout(2000).build();
             service.recognizeUsingWebSocket(new MicrophoneInputStream(), recOptions, new MicrophoneRecognizeDelegate());
             return "";
-</pre>
+```
 
-In addiiton to this call you need to add couple more methods:
-<pre>
+In addition to this call you need to add couple more methods:
+```java
 
     //6. addditional helper class
     private class MicrophoneRecognizeDelegate implements RecognizeCallback {
@@ -184,28 +202,7 @@ In addiiton to this call you need to add couple more methods:
             }
         });
     }
-
-    //Watch for keyboard input
-    private abstract class EmptyTextWatcher implements TextWatcher {
-        private boolean isEmpty = false; // assumes text is initially empty
-
-        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s.length() == 0) {
-                isEmpty = true;
-                onEmpty(true);
-            } else if (isEmpty) {
-                isEmpty = false;
-                onEmpty(false);
-            }
-        }
-
-        @Override public void afterTextChanged(Editable s) {}
-
-        public abstract void onEmpty(boolean empty);
-    }
-</pre>
+```
 
 You are ready to run and hear the voice of IBM Watson!
 
