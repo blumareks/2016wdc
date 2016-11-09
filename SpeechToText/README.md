@@ -5,7 +5,7 @@ The voice user interface is a great element for enhancing IoT, Robots, or your v
 
 IBM Watson Speech-to-Text service is available as IBM cognitive service for us to be used from IBM Bluemix platform.
 
-Prerequisites: [In order to use this example you need to **finish the previous lab**](https://github.com/blumareks/2016wdc/tree/master/SentimentSensitiveApp)**
+Prerequisites: [In order to use this example you need to **finish the previous lab**](https://github.com/blumareks/2016wdc/tree/master/SentimentSensitiveApp)
 - in addition to previous reqs
 - you would need the IBM Watson Speech-to-text cognitive services
 I explain at the end of this blogpost on how to get straight with prereqs.
@@ -97,9 +97,9 @@ Go to IBM Bluemix and add/create the IBM Watson Speech to Text service - click <
 Be sure to use a static API username and password. And copy over the credentials for the service. You would need them in the app later.
 
 Now we need to allow to call Watson service from our app. Double click <code>/app/manifest/AndroidManifest.xml</code> in the view Android:
-<pre>
+```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
-</pre>
+```
 
 <b>Final steps</b>
 
